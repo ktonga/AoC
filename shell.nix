@@ -4,12 +4,13 @@ let
 
   inherit (nixpkgs) pkgs;
 
-  f = { mkDerivation, base, containers, split, stdenv }:
+  f = { mkDerivation, base, containers, list-zipper, split, stdenv
+      }:
       mkDerivation {
         pname = "aoc2018";
         version = "0.1.0.0";
         src = ./.;
-        libraryHaskellDepends = [ base containers split ];
+        libraryHaskellDepends = [ base containers list-zipper split ];
         doHaddock = false;
         homepage = "https://github.com/ktonga/aoc2018";
         description = "Advent of Code 2018";
