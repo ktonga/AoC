@@ -1,20 +1,20 @@
 module Day1 where
 
-import qualified Data.Set                      as S
+import Universum
 
-day1Data :: IO [Integer]
-day1Data = fmap (read . trimPlus) . lines <$> readFile "input/day1.txt"
+part1 :: IO (Maybe Int)
+part1 =  fmap snd . find ((== 2020) . fst) . (f <=< tails) <$> input
  where
-  trimPlus ('+' : ds) = ds
-  trimPlus ds         = ds
+  f (h : t) = (\x -> (h + x, h * x)) <$> t
+  f _ = []
 
-solveDay1 :: IO ()
-solveDay1 = day1Data >>= print . sum
-
-solveDay1Part2 :: IO ()
-solveDay1Part2 = do
-  input <- day1Data
-  print $ dupl S.empty $ scanl (+) 0 (cycle input)
+part2 :: IO (Maybe Int)
+part2 =  fmap snd . find ((== 2020) . fst) . (f <=< tails) <$> input
  where
-  dupl s (i : is) = if i `S.member` s then i else dupl (i `S.insert` s) is
+  f (h : t) = f' h <=< tails $ t
+  f _ = []
+  f' h (h' : t) = (\x -> (h + h' + x, h * h' * x)) <$> t
+  f' _ _ = []
 
+input :: IO [Int]
+input = mapMaybe (readMaybe . toString) . lines <$> readFile "input/day1.txt"
